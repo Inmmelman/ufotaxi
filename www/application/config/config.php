@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/ufotaxi/www/';
+$config['base_url']	= 'http://ufotaxi/';
 
 /*
 |--------------------------------------------------------------------------
