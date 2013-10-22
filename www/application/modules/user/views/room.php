@@ -3,7 +3,7 @@
     <p>This section represents the area that only logged in members can access.</p>
     <ul>
         <li><a href="">Редактировать мои данные</a> </li>
-        <li><a href="">Сделать заказ</a> </li>
+        <li><a href="<?php echo site_url('/create-order') ?>">Сделать заказ</a> </li>
         <li><a href="<?php echo site_url('/history') ?>">История заказов</a> </li>
     </ul>
     <ul>
