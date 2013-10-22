@@ -6,22 +6,23 @@ class Userinfos extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('user_model');
-        $this->load->library('form_validation');
+        $this->load->library('encrypt');
     }
 
     public function getUserByPhone(){
 
         $userPhone = (int)$_GET['term'];
-        $userId = 0;
 
         $usersArray = $this->user_model->get_user($userPhone);
         $usersName = array();
 
+
+
         foreach ($usersArray ->result() as $row)
         {
-            $usersName[] = array('label' => $row->phone ." ".$row->name,'value' => $row->id);
+            $_encodeUserId = $this->encrypt->encode($row->id);
+            $usersName[] = array('label' => $row->phone ." ".$row->name,'value' => $row->phone, 'user_id' => $_encodeUserId,'user_name' => $row->name);
         }
-
 
         echo json_encode($usersName);
     }

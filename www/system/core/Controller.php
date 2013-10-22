@@ -62,7 +62,7 @@ class CI_Controller {
 		return self::$instance;
 	}
 
-    public function _loadViews($page,$header='',$data = false,$module=false){
+    public function _loadViews($page,$data = false,$header='',$module=false){
         $data['header'] = $header;
         $data['page'] = $page;
         $data['module'] = $module;

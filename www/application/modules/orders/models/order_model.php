@@ -9,5 +9,13 @@ class Order_model extends CI_Model {
         $this->db->insert('orders',$data);
     }
 
+    public function addTemporaryUser($userName,$userPhone){
+        $this->db->insert('users',array(
+                                            'name' =>$userName,
+                                            'phone' => $userPhone,
+                                            'user_group' => 3
+                                            ));
+        return $this->db->insert_id();
+    }
+
 }
-?>

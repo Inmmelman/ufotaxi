@@ -9,7 +9,8 @@ class Control extends CI_Controller {
             redirect('/');
         }
 
-        $this->_loadViews('control');
+        $list = $this->load->view('order-list', '', true);
+        $this->_loadViews('control',array('orderList' => $list));
 	}
 }
 
