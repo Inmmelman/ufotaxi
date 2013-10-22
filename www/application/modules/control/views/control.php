@@ -21,11 +21,14 @@
                 перевозка животных<input type="checkbox" name="requirements[transport_animals]">
                 Для куряих <input type="checkbox" name="requirements[for_smokers]">
             </fieldset>
+    Автопоиск <input type="checkbox" name="auto-search">
     <input type="submit" value="Add">
     <input type="button" value="Cancel">
     <?php echo form_close();?>
+
+    <?php echo $orderList; ?>
 </div>
 
 <div style="width: 500px; float: left">
-    <?php echo $orderList; ?>
+
 </div>

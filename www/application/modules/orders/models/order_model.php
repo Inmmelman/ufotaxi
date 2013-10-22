@@ -18,4 +18,8 @@ class Order_model extends CI_Model {
         return $this->db->insert_id();
     }
 
+    public function addCar($carInfo){
+        $this->db->insert('cars',$carInfo);
+    }
+
 }

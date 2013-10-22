@@ -13,26 +13,7 @@ class Orders extends CI_Controller {
 	{
         $userId = 0;
 
-        /*
-         * binary mask
-         */
-        $requirementsBits = array(
-            'air_conditioning' => 1,
-            'child_seat'       => 2,
-            'for_smokers'      => 4,
-            'ransport_animals' => 8
-        );
-
-        $carsRequirements = 0;
-
-        // TODO :  wtf array
-
-        if(is_array($this->input->post('requirements'))){
-            foreach($this->input->post('requirements') as $key => $car_requirement){
-                $carsRequirements += $requirementsBits[$key];
-            }
-        }
-
+        $carsRequirements = getBinaryMaskHelper($this->input->post('requirements'));
 
         if($this->input->post('user-id')){
             $userId = $this->encrypt->decode($this->input->post('user-id'));
