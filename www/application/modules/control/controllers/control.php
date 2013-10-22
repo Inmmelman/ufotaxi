@@ -13,7 +13,7 @@ class Control extends CI_Controller {
     public function index()
 	{
 
-        if($this->user['user-group'] != 1 ){
+        if(!$this->user || (int)$this->user['user-group'] != 1 ){
             redirect('/');
         }
         $this->grocery_crud->set_table('orders');

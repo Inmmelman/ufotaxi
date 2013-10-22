@@ -13,7 +13,6 @@ class Profile extends CI_Controller {
 
     public function index()
     {
-
         if(($this->session->userdata('user_name') != ""))
         {
             $this->room();
@@ -31,8 +30,12 @@ class Profile extends CI_Controller {
 
         $result = $this->user_model->login($login,$password);
         if ($result) {
+
+            if($result['user-group'] == 1){
+                redirect('control');
+            }
             $this->user = $result;
-            $this->room();
+            redirect('room');
         }
         else {
             $this->_login_fail();
@@ -43,9 +46,13 @@ class Profile extends CI_Controller {
         $this->_loadViews('login-fail');
     }
 
-    public function thankPage()
+    public function room()
     {
-        $this->_loadViews('thankPage');
+        if($this->session->userdata('logged_in')){
+            $this->_loadViews('room');
+        }else{
+            $this->index();
+        }
     }
 
     protected function _callback_validate_phone($phone){
@@ -72,27 +79,22 @@ class Profile extends CI_Controller {
         else
         {
             $this->user_model->add_user();
-            $this->thankPage();
+            redirect('/room');
         }
     }
+
     public function logout()
     {
-        $newdata = array(
-            'user_id'   =>'',
-            'user_name'  =>'',
-            'user_email'     => '',
-            'logged_in' => FALSE,
-        );
+        $newdata = array('logged_in' => FALSE);
         $this->session->unset_userdata($newdata );
         $this->session->sess_destroy();
         $this->index();
     }
 
-    public function room(){
-        $this->_loadViews('room');
-    }
+    public function getUserOrderHistory(){
+        $id = $this->user['user_id'];
+        $orderList = $this->user_model->getOrderHistoryById($id);
 
-    public function getUserByPhone(){
-
+        $this->_loadViews('order-history',array('order_list' => $orderList));
     }
 }

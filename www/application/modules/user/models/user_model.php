@@ -26,27 +26,39 @@ class User_model extends CI_Model {
                 );
             }
             $this->session->set_userdata($newdata);
-            return true;
+            return $newdata;
         }
         return false;
     }
+
+
     public function add_user()
     {
         $data = array(
             'phone'=>$this->input->post('user-phone'),
             'email'=>$this->input->post('user-email'),
-            'password'=>md5($this->input->post('password')),
+            'password'=>md5($this->input->post('user-password')),
             'user_group'=> 2
         );
 
         $this->db->insert('users',$data);
     }
+
+
     public function get_user($userPhone){
         $this->db->select('name,id,phone');
         $this->db->like('phone', $userPhone);
         $usersArray = $this->db->get('users');
 
         return $usersArray;
+    }
+
+    public function getOrderHistoryById($id){
+        $this->db->select('*');
+        $this->db->where('user', $id);
+        $query = $this->db->get('orders');
+        $orderList = $query->result();
+        return $orderList;
     }
 }
 ?>

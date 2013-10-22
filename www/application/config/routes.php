@@ -41,6 +41,9 @@
 $route['default_controller'] = "main";
 $route['registration'] = "user/profile/registration";
 $route['login'] = "user/profile/login";
+$route['logout'] = "user/profile/logout";
+$route['room'] = "user/profile/room";
+$route['history'] = "user/profile/getUserOrderHistory";
 $route['add-car'] = "control/addCarForm";
 
 $route['users'] = 'user/userinfos/getUserByPhone';
