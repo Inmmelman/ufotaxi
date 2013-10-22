@@ -29,6 +29,6 @@
     <?php echo $orderList; ?>
 </div>
 
-<div style="width: 500px; float: left">
+<div id="map" style="width: 500px; height: 400px; float: left">
 
 </div>
