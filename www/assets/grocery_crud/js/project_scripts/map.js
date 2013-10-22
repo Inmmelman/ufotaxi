@@ -1,16 +1,31 @@
 $(document).ready(function(){
-	var geocoder  = new google.maps.Geocoder();
+	var geocoder, map, markers = [];
+	geocoder = new google.maps.Geocoder();
 
 	function createMarker(coords, map){
 		var marker = new google.maps.Marker({
 			position: coords,
 			map: map
-		})
+		});
+	}
+
+	function getCoordinatsFromAddress(address){
+		geocoder.geocode({ 'address': address}, function(results, status){
+			if(status == google.maps.GeocoderStatus.OK){
+				var latitude = results[0].geometry.location.lat();
+				var longitude = results[0].geometry.location.lng();
+				map.setCenter(new google.maps.LatLng(latitude,longitude));
+				map.setZoom(15);
+				createMarker(new google.maps.LatLng(latitude,longitude), map)
+			}
+		});
 	}
 
 	function initialize(){
-		var coords = new google.maps.LatLng(50.397, 30.644);
-		var featureOpts = [
+		var coords, featuresOpts, addressFrom, addressTo, autocompleteOptions, mapOptions, customMapType,
+			MY_MAPTYPE_ID = 'custom_style';
+		coords = new google.maps.LatLng(50.397, 30.644);
+		featuresOpts = [
 			{
 				"featureType": "water",
 				"elementType": "geometry.fill",
@@ -93,14 +108,13 @@ $(document).ready(function(){
 				]
 			}
 		];
-		var MY_MAPTYPE_ID = 'custom_style';
-		var input = document.getElementById('addressField');
-		var autocompleteOptions = {
+		addressFrom = $("[name='address-from']")[0];
+		addressTo = $("[name='address-to']")[0];
+		autocompleteOptions = {
 			componentRestrictions: {country: 'ua'}
 		};
 
-
-		var mapOptions = {
+		mapOptions = {
 			center: coords,
 			zoom: 6,
 			mapTypeControlOptions: {
@@ -109,19 +123,18 @@ $(document).ready(function(){
 			mapTypeId: MY_MAPTYPE_ID,
 			disableDefaultUI: true
 		};
-		var styledMapOptions = {
-			name: 'UFO Style'
-		};
-		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-		var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+		map = new google.maps.Map($("#map")[0], mapOptions);
+		customMapType = new google.maps.StyledMapType(featuresOpts, {name: 'UFO Style'});
 		map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
-		var autocomplete = new google.maps.places.Autocomplete(input, autocompleteOptions);
+		var lol = new google.maps.places.Autocomplete(addressFrom, autocompleteOptions);
 
+		addressFrom.addEventListener("blur", function(){
+			getCoordinatsFromAddress(addressFrom.value)
+		});
 		google.maps.event.addListener(map, "click", function(){
-			codeAddress_eng();
+
 		});
 	}
-
 
 	google.maps.event.addDomListener(window, 'load', initialize);
 
