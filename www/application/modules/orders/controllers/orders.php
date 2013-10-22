@@ -37,6 +37,10 @@ class Orders extends CI_Controller {
         //$this->session->set_flashdata('order-status', 'Заказ доабвлен' );
         redirect('control');
 	}
+
+    public function addQuickOrder(){
+
+    }
 }
 
 /* End of file welcome.php */
