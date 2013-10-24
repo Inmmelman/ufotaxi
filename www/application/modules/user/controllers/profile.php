@@ -91,10 +91,14 @@ class Profile extends CI_Controller {
         $this->index();
     }
 
-    public function getUserOrderHistory(){
+    public function userOrderHistory(){
         $id = $this->user['user_id'];
         $orderList = $this->user_model->getOrderHistoryById($id);
 
         $this->_loadViews('order-history',array('order_list' => $orderList));
+    }
+
+    public function createOrderView(){
+        $this->_loadViews('create-order');
     }
 }

@@ -37,6 +37,25 @@ class Orders extends CI_Controller {
         //$this->session->set_flashdata('order-status', 'Заказ доабвлен' );
         redirect('control');
 	}
+
+    public function addQuickOrder(){
+        $carsRequirements = getBinaryMaskHelper($this->input->post('requirements'));
+        $userId = $this->user['user_id'];
+
+        $data = array(
+            'from'=> $this->input->post('address-from'),
+            'to'=> $this->input->post('address-to'),
+            'user'=> $userId,
+            'cars_requirements'=> $carsRequirements,
+            'rate' => 1,
+            'arrive_time' => $this->input->post('arrive-time'),
+            'status' => 3
+        );
+
+        $this->order_model->addOrder($data);
+        //$this->session->set_flashdata('order-status', 'Заказ доабвлен' );
+        redirect('/room');
+    }
 }
 
 /* End of file welcome.php */

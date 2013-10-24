@@ -43,7 +43,8 @@ $route['registration'] = "user/profile/registration";
 $route['login'] = "user/profile/login";
 $route['logout'] = "user/profile/logout";
 $route['room'] = "user/profile/room";
-$route['history'] = "user/profile/getUserOrderHistory";
+$route['history'] = "user/profile/userOrderHistory";
+$route['create-order'] = "user/profile/createOrderView";
 $route['add-car'] = "control/addCarForm";
 
 $route['users'] = 'user/userinfos/getUserByPhone';
