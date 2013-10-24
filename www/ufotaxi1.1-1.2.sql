@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Окт 22 2013 г., 18:01
+-- Время создания: Окт 24 2013 г., 17:24
 -- Версия сервера: 5.5.25
 -- Версия PHP: 5.3.13
 
@@ -21,6 +21,53 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE `ufotaxi` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `ufotaxi`;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `car_events_type`
+--
+
+CREATE TABLE IF NOT EXISTS `car_events_type` (
+  `event_name` varchar(100) NOT NULL,
+  `id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id` (`event_name`),
+  KEY `id_2` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `car_events_type`
+--
+
+INSERT INTO `car_events_type` (`event_name`, `id`) VALUES
+('взял заказ', 5),
+('вошел в сеть', 1),
+('вышел из очереди', 4),
+('вышел из сети', 2),
+('закончил заказ', 6),
+('стал в очередь', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `car_in_system`
+--
+
+CREATE TABLE IF NOT EXISTS `car_in_system` (
+  `car_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL COMMENT '1 - в сети 2 - готов взять заказ 3 - есть заказ',
+  `lat` varchar(100) NOT NULL,
+  `lng` varchar(100) NOT NULL,
+  KEY `car_id` (`car_id`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `car_in_system`
+--
+
+INSERT INTO `car_in_system` (`car_id`, `status`, `lat`, `lng`) VALUES
+(2, 3, '50.3', '42.3');
 
 -- --------------------------------------------------------
 
@@ -47,14 +94,62 @@ INSERT INTO `cars` (`id`, `callsign`, `services`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `cars_event_history`
+--
+
+CREATE TABLE IF NOT EXISTS `cars_event_history` (
+  `car_id` int(11) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `event_type_id` int(11) DEFAULT NULL,
+  `event_value` varchar(11) NOT NULL,
+  KEY `car_id` (`car_id`,`time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `cars_event_history`
+--
+
+INSERT INTO `cars_event_history` (`car_id`, `time`, `event_type_id`, `event_value`) VALUES
+(2, '2013-10-24 12:17:51', 1, '1'),
+(2, '2013-10-24 12:30:11', 5, '1'),
+(2, '2013-10-24 12:45:20', 3, '1'),
+(2, '2013-10-24 12:58:23', 4, '1'),
+(2, '2013-10-24 12:59:28', 4, '1'),
+(2, '2013-10-24 13:21:45', 5, '9'),
+(2, '2013-10-24 13:23:19', 5, '9'),
+(2, '2013-10-24 13:32:57', 3, '1'),
+(2, '2013-10-24 13:35:12', 1, '1'),
+(2, '2013-10-24 13:41:03', 3, '1'),
+(2, '2013-10-24 13:45:56', 5, '9');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `cars_geoposition`
 --
 
 CREATE TABLE IF NOT EXISTS `cars_geoposition` (
   `car_id` int(11) NOT NULL,
-  `latlng` varchar(100) NOT NULL,
+  `lat` varchar(100) NOT NULL,
+  `lng` varchar(100) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `car_id` (`car_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `cars_geoposition`
+--
+
+INSERT INTO `cars_geoposition` (`car_id`, `lat`, `lng`, `date`) VALUES
+(2, '30.5249', '50.46738', '2013-10-24 10:48:28'),
+(2, '30.5249', '50.46738', '2013-10-24 10:48:28'),
+(2, '30.5249', '50.46738', '2013-10-24 10:48:36'),
+(2, '30.5249', '50.46738', '2013-10-24 10:48:36'),
+(2, '42.3', '50.3', '2013-10-24 13:21:45'),
+(2, '42.3', '50.3', '2013-10-24 13:23:08'),
+(2, '42.3', '50.3', '2013-10-24 13:43:45'),
+(2, '42.3', '50.3', '2013-10-24 13:45:08'),
+(2, '42.3', '50.3', '2013-10-24 13:45:56');
 
 -- --------------------------------------------------------
 
@@ -72,6 +167,27 @@ CREATE TABLE IF NOT EXISTS `movement_car_log` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `order_to_car`
+--
+
+CREATE TABLE IF NOT EXISTS `order_to_car` (
+  `order_id` int(11) NOT NULL,
+  `car_id` int(11) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `time` (`time`),
+  KEY `order_id` (`order_id`,`car_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `order_to_car`
+--
+
+INSERT INTO `order_to_car` (`order_id`, `car_id`, `time`) VALUES
+(9, 2, '2013-10-24 13:45:56');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `orders`
 --
 
@@ -83,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `cars_requirements` int(1) NOT NULL,
   `rate` int(11) NOT NULL,
   `arrive_time` date NOT NULL,
-  `status` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL COMMENT '1 - в ождании 2 - на выполнении 3 - выполнен',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
@@ -100,7 +216,7 @@ INSERT INTO `orders` (`id`, `from`, `to`, `user`, `cars_requirements`, `rate`, `
 (6, 'sda', 'dqwd', 204, 3, 1, '0000-00-00', 1),
 (7, 'dasd', 'qwdsad', 187, 0, 1, '0000-00-00', 1),
 (8, '0', '0', 207, 0, 0, '0000-00-00', 1),
-(9, 'sad', 'dwfas', 52, 3, 2, '0000-00-00', 1);
+(9, 'sad', 'dwfas', 52, 3, 2, '0000-00-00', 2);
 
 -- --------------------------------------------------------
 
@@ -114,6 +230,28 @@ CREATE TABLE IF NOT EXISTS `rates` (
   `cost` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `stack`
+--
+
+CREATE TABLE IF NOT EXISTS `stack` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `car_id` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `car_id` (`car_id`),
+  KEY `id` (`id`,`car_id`,`date`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Дамп данных таблицы `stack`
+--
+
+INSERT INTO `stack` (`id`, `car_id`, `date`) VALUES
+(4, 2, '2013-10-24 13:32:57');
 
 -- --------------------------------------------------------
 

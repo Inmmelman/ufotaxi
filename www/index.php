@@ -44,7 +44,7 @@ if (defined('ENVIRONMENT'))
 			exit('The application environment is not set correctly.');
 	}
 }
-
+//http://ufotaxi/index.php/api/api/user/id/1
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
