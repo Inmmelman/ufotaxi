@@ -1,9 +1,10 @@
 $(document).ready(function(){
+	alert(11)
 	var geocoder, map, markers = [];
 	geocoder = new google.maps.Geocoder();
 
 	function createMarker(coords, map){
-		var marker = new google.maps.Marker({
+		new google.maps.Marker({
 			position: coords,
 			map: map
 		});
@@ -135,7 +136,6 @@ $(document).ready(function(){
 
 		});
 	}
-
 	google.maps.event.addDomListener(window, 'load', initialize);
 
 });

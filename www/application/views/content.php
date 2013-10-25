@@ -6,7 +6,6 @@
 		<li><a href="<?php echo site_url('/'); ?>">Главная</a></li>
 	</ul>
 	<?php print (isset($content)) ? $content : NULL; ?>
-
 	<?php
 	$this->load->view($page);
 	?>
