@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6c_Urt2OXENfmiXc3vTQBlbi2UeaF7dA&sensor=true"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script>
+<!--	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script>-->
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/grocery_crud/js/project_scripts/map.js"></script>
 	<script type="text/javascript" src="<?php echo base_url() ?>assets/grocery_crud/js/project_scripts/general.js"></script>
 </head>

@@ -27,7 +27,7 @@ class Profile extends CI_Controller {
     {
         $login = $this->input->post('user-login');
         $password = md5 ($this->input->post('user-password'));
-
+		die('asdas');
         $result = $this->user_model->login($login,$password);
         if ($result) {
 
